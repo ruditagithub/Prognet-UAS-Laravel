@@ -10,7 +10,12 @@
 <div class="container mx-auto p-6">
     <!-- Header -->
     <div class="flex justify-between items-center mb-8 bg-white p-4 shadow-md rounded-lg">
-        <h2 class="text-3xl font-bold text-gray-800">Admin Panel</h2>
+        <div>
+            <h2 class="text-3xl font-bold text-gray-800">Admin Panel</h2>
+            @auth
+                <p class="text-sm text-gray-600 mt-1">Welcome, {{ Auth::user()->nama }} ({{ Auth::user()->username }})</p>
+            @endauth
+        </div>
         <a href="{{ route('logout') }}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
             Logout
         </a>

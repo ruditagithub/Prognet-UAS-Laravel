@@ -21,6 +21,7 @@ class User extends Authenticatable
         'phone',
         'email',
         'password',
+        'role', // Tambahkan ini
     ];
 
     protected $hidden = [
@@ -37,5 +38,17 @@ class User extends Authenticatable
     public function bookings()
     {
         return $this->hasMany(Booking::class, 'user_id', 'id');
+    }
+
+    // Helper method untuk cek admin
+    public function isAdmin()
+    {
+        return $this->role === 'admin';
+    }
+
+    // Helper method untuk cek user biasa
+    public function isUser()
+    {
+        return $this->role === 'user';
     }
 }

@@ -29,19 +29,25 @@ class AuthController extends Controller
         $username = trim($request->username);
         $password = $request->password;
 
-        // Check for admin
-        if ($username === 'admin' && $password === 'adminbaikhati779829') {
-            session(['is_admin' => true, 'user_id' => 'admin', 'user_logged_in' => true]);
-            return redirect()->route('admin.index')->with('success', 'Login berhasil! Anda akan diarahkan ke halaman admin.');
-        }
-
-        // Check regular user
+        // Check user dari database
         $user = User::where('username', $username)->first();
 
         if ($user && Hash::check($password, $user->password)) {
             Auth::login($user);
-            session(['user_logged_in' => true, 'user_id' => $user->id]);
-            return redirect()->route('home')->with('success', 'Login berhasil!');
+
+            // Set session
+            session([
+                'user_logged_in' => true,
+                'user_id' => $user->id,
+                'is_admin' => $user->role === 'admin' // Set admin flag
+            ]);
+
+            // Redirect berdasarkan role
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.index')->with('success', 'Login berhasil! Selamat datang Admin.');
+            } else {
+                return redirect()->route('home')->with('success', 'Login berhasil!');
+            }
         }
 
         return back()->with('error', 'Username atau password salah.')->withInput();
@@ -89,6 +95,7 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'user', // Default role adalah user
         ]);
 
         return redirect()->route('login')->with('success', 'Registrasi berhasil!');

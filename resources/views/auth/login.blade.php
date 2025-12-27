@@ -40,11 +40,11 @@
                 @csrf
                 <div class="mb-4" data-aos="fade-up" data-aos-duration="1000">
                     <label for="username" class="block text-white mb-2">Username</label>
-                    <input type="text" id="username" name="username" value="{{ old('username') }}" required class="w-full px-4 py-2 border border-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-[#451a03] text-white">
+                    <input type="text" id="username" name="username" value="{{ old('username') }}" required class="w-full px-4 py-2 border border-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-[#451a03] text-black">
                 </div>
                 <div class="mb-6" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="100">
                     <label for="password" class="block text-white mb-2">Password</label>
-                    <input type="password" id="password" name="password" required class="w-full px-4 py-2 border border-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-[#451a03] text-white">
+                    <input type="password" id="password" name="password" required class="w-full px-4 py-2 border border-white rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 bg-[#451a03] text-black">
                 </div>
                 <button type="submit" class="w-full py-2 bg-white text-[#343131] rounded-lg hover:bg-gray-300 transition duration-300" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">Login</button>
             </form>
