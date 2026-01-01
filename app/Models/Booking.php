@@ -21,6 +21,7 @@ class Booking extends Model
         'checkout',
         'num_rooms',
         'total_price',
+        'status',
     ];
 
     protected $casts = [
@@ -38,5 +39,28 @@ class Booking extends Model
     public function room()
     {
         return $this->belongsTo(Room::class, 'room_id', 'id');
+    }
+
+    // Helper: Hitung durasi menginap
+    public function getDurationAttribute()
+    {
+        return $this->checkin->diffInDays($this->checkout);
+    }
+
+    // Helper: Format total price
+    public function getFormattedTotalPriceAttribute()
+    {
+        return 'Rp ' . number_format($this->total_price, 0, ',', '.');
+    }
+
+    // Helper: Status badge color
+    public function getStatusColorAttribute()
+    {
+        return match($this->status) {
+            'confirmed' => 'green',
+            'pending' => 'yellow',
+            'cancelled' => 'red',
+            default => 'gray'
+        };
     }
 }

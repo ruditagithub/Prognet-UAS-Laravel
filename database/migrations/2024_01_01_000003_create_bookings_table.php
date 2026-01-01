@@ -15,7 +15,8 @@ return new class extends Migration
             $table->date('checkin');
             $table->date('checkout');
             $table->integer('num_rooms');
-            $table->decimal('total_price', 12, 2);
+            $table->decimal('total_price', 15, 2);
+            $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('confirmed');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

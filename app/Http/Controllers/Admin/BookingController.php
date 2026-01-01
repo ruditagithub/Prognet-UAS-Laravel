@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Booking;
+use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class BookingController extends Controller
@@ -43,12 +45,25 @@ class BookingController extends Controller
 
     public function destroy($booking_id)
     {
+        DB::beginTransaction();
+
         try {
             $booking = Booking::findOrFail($booking_id);
+
+            // Kembalikan stok kamar jika booking confirmed
+            if ($booking->status === 'confirmed') {
+                $room = Room::findOrFail($booking->room_id);
+                $room->increment('available_rooms', $booking->num_rooms);
+            }
+
             $booking->delete();
-            return redirect()->route('admin.index')->with('success', 'Booking deleted successfully!');
+
+            DB::commit();
+
+            return redirect()->route('admin.index')->with('success', 'Booking deleted successfully! Stok kamar dikembalikan.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Error deleting booking. Please try again.');
+            DB::rollBack();
+            return back()->with('error', 'Error deleting booking: ' . $e->getMessage());
         }
     }
 }

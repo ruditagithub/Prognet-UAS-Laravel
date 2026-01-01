@@ -26,6 +26,8 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['check.auth'])->group(function () {
     Route::get('/book', [BookingController::class, 'showBookingForm'])->name('bookings.create');
     Route::post('/book', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/my-bookings', [BookingController::class, 'myBookings'])->name('bookings.mybookings');
+    Route::post('/bookings/{booking_id}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
 
 // Admin Routes
